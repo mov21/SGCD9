@@ -24,10 +24,11 @@ from werkzeug import secure_filename
 from flask import send_from_directory
 
 
-UPLOAD_FOLDER = '/uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf'])
 
 app = Flask(__name__)
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_FOLDER = os.path.join(APP_ROOT, 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Flask-Login
@@ -47,27 +48,19 @@ tabmaster = Blueprint('tabmaster', __name__, url_prefix='' , template_folder='te
 
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', l)[l] in ALLOWED_EXTENSIONS
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
-
-@tabmaster.route('/uploads_<filename>')
-def uploaded_file(filename):
-    return send_from_directory('UPLOAD_FOLDER',
-                               filename)
 
 @tabmaster.route('/uploads', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
         file = request.files['file']
         print request.form.items(True)
-        print filename
         if file and allowed_file(file.filename):
+            flash('File Successfully Uploaded')
             filename = secure_filename(file.filename)
-            print "aici am ajuns"
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file',
-                                    filename=filename))
-        return render_template(url_for('upload_file.html'))
+    return render_template('tabmaster/upload_file.html')
 
 @tabmaster.before_request
 def before_request():

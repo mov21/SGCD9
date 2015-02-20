@@ -1,0 +1,248 @@
+    1  sudo add-apt-repository ppa:lestcape/cinnamon
+    2  sudo apt-get update
+    3  sudo apt-get install cinnamon
+    4  sudo apt-add-repository “deb http://archive.canonical.com/ $(lsb_release -sc) partner”
+    5  sudo apt-get install flashplugin-installer
+    6  sudo apt-get update
+    7  sudo apt-get install adobe-flashplugin
+    8  sudo apt-get update
+    9  exit
+   10  sudo apt-get update
+   11  sudo apt-get install flashplayer
+   12  sudo apt-get install flashplugin-installer
+   13  sudo apt-get update
+   14  sudo apt-get install gparted
+   15  sudo gparted
+   16  sudo restart
+   17  sudo reboot
+   18  sudo sh -c ‘echo “deb http://archive.canonical.com/ubuntu trusty partner” >> /etc/apt/sources.list.d/canonical_partner.list’
+   19  sudo sudo sh -c ‘echo “deb http://archive.canonical.com/ubuntu trusty partner” >> /etc/apt/sources.list.d/canonical_partner.list’
+   20  sudo sh -c ‘echo “deb http://archive.canonical.com/ubuntu trusty partner” >> /etc/apt/sources.list.d/canonical_partner.list’
+   21  ls
+   22  cd Downloads/
+   23  ls
+   24  sudo dpkg -i skype-ubuntu-precise_4.3.0.37-1_i386.deb 
+   25  sudo apt-get install skype
+   26  sudo apt-get -f install 
+   27  cd Desktop/example/
+   28  ls
+   29  apt-get install g++
+   30  sudo apt-get install g++
+   31  sudo apt-get install gcc
+   32  g++ exemplu1.c 
+   33  gcc exemplu1.c 
+   34  make
+   35  cd ..
+   36  make examples 
+   37  whoami 
+   38  install ncurses-dlevel ncurses
+   39  install ncurses-devel ncurses
+   40  yum install ncurses-devel ncurses
+   41  apt-get  install yum
+   42  sudo apt-get  install yum
+   43  sudo apt-get install libncurses5-dev libncursesw5-dev
+   44  make examples 
+   45  ./bin/exemplu1 
+   46  ls
+   47  sudo pppoeconf
+   48  pon dsl-provider 
+   49  uname -a
+   50  jdk-8uversion-linux-x64.tar.gz
+   51  cd 
+   52  cd Downloads/
+   53  tar zxvf jdk-8uversion-linux-x64.tar.gz
+   54  tar zxvf jdk-8u20-linux-x64.tar.gz 
+   55  cd /etc/bash.bashrc
+   56  cd /
+   57  ls
+   58  cd etc/bash.bashrc
+   59  cd etc/
+   60  ls
+   61  file bash.bashrc
+   62  find bash.bashrc
+   63  cd
+   64  cd Desktop/
+   65  javac Hello.java 
+   66  debug
+   67  -debug
+   68  DEBUG
+   69  -A
+   70  man
+   71  man debug
+   72  sudo apt-get install nvidia-prime
+   73  sudo apt-get remove skype skype-bin
+   74  rm -rf ~/.skype
+   75  sudo apt-get update ; sudo apt-get install skype
+   76  ls
+   77  cd temapoo/
+   78  cd tema1/
+   79  cd src/
+   80  chmod 777 checker.sh 
+   81  ./checker.sh 
+   82  cd 
+   83  ls
+   84  cd temapoo/tema1/src/
+   85  ./checker.sh 
+   86  ls
+   87  cd temapoo/
+   88  cd tema1/
+   89  cd src/
+   90  ./checker.sh
+   91  lsb_release -a
+   92  sudo easy_install virtualenv
+   93  sudo apt-get easy_install
+   94  sudo pip install virtualenv
+   95  apt-get pip
+   96  apt-get install pip
+   97  sudo apt-get install pip
+   98  sudo apt-get install easy_install
+   99  update
+  100  upgrade
+  101  cat /etc/lsb-release
+  102  sudo apt-get install python-stuptools
+  103  sudo apt-get install git
+  104  git clone https://github.com/teo721/SG
+  105  ls
+  106  mv SG/ Desktop/
+  107  cd Desktop/
+  108  ls
+  109  cd SG/
+  110  ls
+  111  cat README.md 
+  112  vim README.md 
+  113  gedit README.md 
+  114  git commit -m 'first'
+  115  git login
+  116  git --help
+  117  git config --global user.name "mov21"
+  118  git commit -m 'first'
+  119  git config --global user.email "alina.mertoiu@gmail.com"
+  120  git commit -m 'first'
+  121  git add .
+  122  git commit -m 'first'
+  123  git push
+  124  cd ..
+  125  ls
+  126  cd SG
+  127  ls
+  128  gedit README.md
+  129  git diff
+  130  git commit -a
+  131  git status
+  132  git log README.md
+  133  git commit -am '2'
+  134  gedit README.md
+  135  git commit -am '2'
+  136  git diff
+  137  git log README.md
+  138  git --help
+  139  git pull
+  140  git merge master
+  141  git status
+  142  git add .
+  143  git pull
+  144  git status
+  145  git commit -m 'mesj'
+  146  git status
+  147  git push
+  148  git pul
+  149  git pull
+  150  cd ..
+  151  ls
+  152  mkdir test
+  153  cd test
+  154  git clone https://github.com/mov21/SG
+  155  ls
+  156  cd SG/
+  157  gedit README.md 
+  158  git add .
+  159  git commit -m 'merge problem'
+  160  git remote -v
+  161  git remote add upstream https://github.com/teo721/SG
+  162  git remote -v
+  163  git push && pull
+  164  git pull
+  165  git request .
+  166  git request-pull v1.0 https://github.com/teo721/SG master
+  167  git request-pull https://github.com/teo721/SG master
+  168  ls
+  169  git fetch upstream 
+  170  git checkout master 
+  171  git merge upstream/master 
+  172  cat README.md
+  173  git push
+  174  git commit -m 'check sync'
+  175  git push
+  176  sudo apt-get pip
+  177  sudo apt-get install pip
+  178  sudo apt-get update
+  179  http://flask.pocoo.org/docs/0.10/
+  180  sudo pip install virtualenv
+  181  sudo apt-get install east_install
+  182  sudo apt-get install easy_install
+  183  sudo apt-get install pip
+  184  ls
+  185  unzip setuptools-12.1.zip 
+  186  ls
+  187  cd setuptools-12.1/
+  188  ls
+  189  cat README.txt 
+  190  python setup.py install --prefix=/opt/setuptools
+  191  ls
+  192  python easy_install.py 
+  193  sudo python setup.py install --prefix=/opt/setuptools
+  194  sudo python easy_install
+  195  sudo python easy_install.py
+  196  sudo apt-get install python-pip
+  197  sudo pip install virtualenv
+  198  cd ..
+  199  ls
+  200  rm setuptools-12.1*
+  201  rm -rf setuptools-12.1*
+  202  ls
+  203  virtualenv venv
+  204  ls
+  205  . venv/bin/activate
+  206  pip install Flask
+  207  sudo apt-get vi
+  208  sudo apt-get install vi
+  209  sudo apt-get install vim
+  210  vim app.py
+  211  python app.py 
+  212  cat app.py 
+  213  vim app.py 
+  214  python app.py 
+  215  cat app.py 
+  216  vim app.py 
+  217  python app.py 
+  218  vim app.py 
+  219  python app.py 
+  220  vim app.py 
+  221  python app.py 
+  222  vim app.py 
+  223  mkdir templates
+  224  cd templates/
+  225  ls
+  226  vim user.html
+  227  cd ..
+  228  ls
+  229  cat app.py 
+  230  python app.py 
+  231  vim app.py 
+  232  python app.py 
+  233  vim app.py 
+  234  python app.py 
+  235  vim app.py 
+  236  cd templates/
+  237  cat user.html 
+  238  cd ..
+  239  ls
+  240  sudo apt-get install sublime
+  241  subl .
+  242  Subl .
+  243  python app.py 
+  244  git add .
+  245  git commit -m 'appflask'
+  246  git push
+  247  history 
+  248  history >> /home/alina/Desktop/comenzi.txt

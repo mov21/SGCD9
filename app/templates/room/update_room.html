@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block body %}
+  <form action="" method=post class="form-horizontal">
+    <h2>Update Sala</h2>
+    <div class="control-group">
+        <div class="controls">
+          <input type="text" id="name" name="name" class="input-xlarge"
+            placeholder="Nume" value="{{room.name}}"
+            required>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+          <input type="text" id="area" name="area" class="input-xlarge"
+            placeholder="Corp" value="{{room.area}}"
+            required>
+        </div>
+    </div>
+
+
+    <div class="control-group">
+        <div class="controls">
+          <button type="submit" class="btn btn-success">Update</button>
+          <a href="{{ url_for('room.rooms') }}">Back to list</a>
+        </div>
+    </div>
+  </form>
+{% endblock %}

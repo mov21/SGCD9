@@ -1,0 +1,92 @@
+
+<!doctype html>
+<title>Saint George City of Debate</title>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<meta charset="utf-8">
+<style>
+body {
+	padding-top: 60px;
+	padding-bottom: 100px;
+}
+</style>
+<link href="/static/css/bootstrap.css" rel="stylesheet">
+<link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+<script src="/static/js/jquery.js"></script>
+<script src="/static/js/bootstrap.js"></script>
+<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<button type="button" class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="brand" href='/' >Saint George City of Debate</a>
+				<div class="nav-collapse collapse">
+					
+					<ul class="nav">
+						
+						
+						{% if g.user.is_authenticated()%}
+							
+							{% if g.user.is_debater() %}
+							<li class="active"><a href="/">Home</a></li>
+								<li><a href="{{ url_for('debater.program') }}">Program</a></li>
+								<li><a href="{{ url_for('debater.debater_games') }}">Meciuri</a></li>
+								<li><a href="{{ url_for('debater.team') }}">Echipa</a></li>
+								<li><a href="{{ url_for('debater.about_sfantu_gheorghe') }}">Sfantu Gheorghe</a></li>
+							{% endif %}
+							{% if g.user.is_judge() %}
+							<li class="active"><a href="/">Home</a></li>
+								<li><a href="{{ url_for('judge.judge_program') }}">Program</a></li>
+								<li><a href="{{ url_for('judge.judge_games') }}">Meciuri</a></li>
+								<li><a href="{{ url_for('judge.judge_about_sfantu_gheorghe') }}">Sfantu Gheorghe</a></li>
+							{% endif %}
+							{% if g.user.is_tabmaster() %}
+							<li class="active"><a href="/">Home</a></li>
+								<li><a href="{{ url_for('tabmaster.debaters') }}">Debatari</a></li>
+								<li><a href="{{ url_for('tabmaster.judges') }}">Arbitri</a></li>
+								<li><a href="{{ url_for('tabmaster.round') }}">Runda</a></li>
+								<li><a href="{{ url_for('tabmaster.game_decisions') }}">Decizii arbitri</a></li>
+								<li><a href="{{ url_for('tabmaster.upload_file') }}">Uploads</a></li>
+
+
+							{% endif %}
+							<li><a href="{{ url_for('auth.settings') }}">Setari</a></li>
+							<li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+						{% endif %}
+						{% if not g.user.is_authenticated()%}
+							<li class="active"><a href="/">Home</a></li>
+							<li><a href="{{ url_for('auth.login') }}">Login</a></li>
+							<li><a href="{{ url_for('auth.register') }}">Register</a></li>
+						{% endif %}
+						
+					</ul>
+				</div>
+				<!--/.nav-collapse -->
+			</div>
+		</div>
+</div>
+
+<div id="main" class="container">
+	{% with messages = get_flashed_messages() %}
+	{% if messages %}
+	  <div class="alert">
+		    <ul class="flashes">
+		    {% for message in messages %}
+		      <li>{{ message }}</li>
+		    {% endfor %}
+		    </ul>
+		</div>
+	{% endif %}
+	{% endwith %}
+
+	{% block body %}{% endblock %}
+	
+	<hr>
+	<footer id="footer">
+				<p>SG &copy; Pavel Nicolae Teodor &copy; Axinte Dana Raluca &copy; Mertoiu Alina </p>
+
+				Contact him at <a href="mailto:teo721@yahoo.com">teo721@yahoo.com</a>.</p>	
+	</footer>
+</div>

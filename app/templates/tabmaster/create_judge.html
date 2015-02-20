@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block body %}
+  <form action="" method=post class="form-horizontal">
+    <h2>Create Judge</h2>
+    <div class="control-group">
+        <div class="controls">
+          <input type="text" id="name" name="name" class="input-xlarge"
+            placeholder="Name" value="{{ request.form.name }}" required>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+          <input type="text" id="email" name="email" class="input-xlarge"
+            placeholder="Email" value="{{ request.form.email }}" required>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+          <input type="text" id="club" name="club" class="input-xlarge"
+            placeholder="Club" value="{{ request.form.club }}" >
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+          <input type="text" id="club" name="category" class="input-xlarge"
+            placeholder="Categorie" value="{{ request.form.category }}" required>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+          <input type="text" id="club" name="clubs_restriction" class="input-xlarge"
+            placeholder="Restrictii cluburi " value="{{ request.form.clubs_restriction }}" >
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+          <input type="text" id="club" name="teams_restriction" class="input-xlarge"
+            placeholder="Restrictii echipe " value="{{ request.form.teams_restriction }}" >
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+          <input type="text" id="club" name="debaters_restriction" class="input-xlarge"
+            placeholder="Restrictii debaterii " value="{{ request.form.debaters_restriction }}" >
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+          <button type="submit" class="btn btn-success">Create Judge</button>
+          <a href="{{ url_for('tabmaster.judges') }}">Back</a>
+        </div>
+    </div>
+
+  </form>
+{% endblock %}

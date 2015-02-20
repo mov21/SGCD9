@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h2>Clasament echipe</h2>
+
+    <table class="table table-hover">
+
+      <tr>
+        <th>#
+        <th>Name
+        <th>Victori
+        <th>Infrangeri
+        <th>Puncte
+        <th>Numar jocuri 
+      {%- for team in teams %}
+      <tr class={{ "success"}}>
+        <td><a>{{ team.id }}</a>
+        <td >{{ team.name }}
+        <td >{{ team.wins }}
+        <td >{{ team.defeats }}
+        <td >{{ team.points }}
+        <td >{{ team.number_of_games }}     
+      {%- endfor %}
+    </table>
+    
+{% endblock %}

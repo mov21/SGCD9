@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h2>Round {{round_number}}</h2>
+
+    <table class="table table-hover">
+
+      <tr>
+        <th>#
+        <th>Sala
+        <th>Guvern
+        <th>Opozitie
+        <th>Arbitru
+        <th>Echipa castigatoare
+      {%- for game in games %}
+      <tr class={{ "success"}}>
+        <td><a>{{ game.id }}</a>
+        <td >{{ game.room }}
+        <td >{{ game.goverment.name }}
+        <td >{{ game.opposition.name }}
+        <td >{{ game.judge }}
+        <td >
+        {% if not game.has_not_decision%}
+          {{game.winner}}
+        {% endif %}  
+      {%- endfor %}
+    </table>
+
+{% endblock %}

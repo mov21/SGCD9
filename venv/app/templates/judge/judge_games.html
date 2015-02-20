@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h2>Round {{round_number}}</h2>
+
+    <table class="table table-hover">
+
+      <tr>
+        <th>#
+        <th>Sala
+        <th>Guvern
+        <th>Opozitie
+        <th>Arbitru
+        <th>
+      {%- for game in games %}
+      <tr class={{ "success"}}>
+        <td><a>{{ game.id }}</a>
+        <td >{{ game.room }}
+        <td >{{ game.goverment.name }}
+        <td >{{ game.opposition.name }}
+        <td >{{ game.judge }}
+        <td >
+        {% if game.has_not_decision%}
+        <p>
+              <a href="{{ url_for('judge.decision', id=game.id) }}" class="btn btn-primary btn-small">Decizie</a>
+        </p>
+        {% endif %}  
+      {%- endfor %}
+    </table>
+
+{% endblock %}

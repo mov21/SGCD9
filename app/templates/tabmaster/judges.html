@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h2>Arbitri</h2>
+
+    <table class="table table-hover">
+
+      <tr>
+        <th>#
+        <th>Name
+        <th>Email
+        <th>Club
+        <th>Categorie
+        <th>Restrictii cluburi
+        <th>Restrictii echipe
+        <th>Restrictii jucatori
+        <th>Disponibil
+        <th>Disponibil
+      {%- for judge in judges %}
+      <tr class={{ "success"}}>
+        <td><a>{{ judge.id }}</a>
+        <td >{{ judge.name }}
+        <td >{{	judge.email }}
+        <td >{{	judge.club }}
+        <td >{{ judge.category }}
+        <td >{{ judge.clubs_restriction }}
+        <td >{{ judge.teams_restriction }}
+        <td >{{ judge.debaters_restriction }}
+        
+        <td >
+          {% if judge.available %}
+            <p>
+            <a href="{{ url_for('tabmaster.judge_not_available', id=judge.id) }}" onClick = "return confirm('Doriti sa il faceti indisponibil?')" class="btn btn-danger btn-small">Not available</a> 
+          </p>
+          {% else %}
+            <p>
+              <a href="{{ url_for('tabmaster.judge_available', id=judge.id) }}" class="btn btn-primary btn-small">Available</a> 
+            </p>
+          {% endif %} 
+        <td >
+          <p>
+            <a href="{{ url_for('tabmaster.update_judge', id=judge.id) }}" class="btn btn-primary btn-small">Update</a> 
+          </p>
+        <td>
+          <p>
+            <a href="{{ url_for('tabmaster.delete_judge', id=judge.id) }}" onClick = "return confirm('Are you sure?')" class="btn btn-danger btn-small">Delete </a>
+          </p>
+      {%- endfor %}
+    </table>
+     <p>
+      <a href="{{ url_for('tabmaster.create_judge') }}" class="btn btn-large btn-primary">New Judge</a>
+    </p>
+{% endblock %}

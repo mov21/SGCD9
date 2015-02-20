@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block body %}
+<form action="" method=post class="form-horizontal">
+    <h2>Settings</h2>
+
+    <div class="control-group">
+        <div class="controls">
+          <input type="password" id="password" name="password" class="input-xlarge"
+            placeholder="Enter Old Password" required>
+        </div>
+    </div>
+
+     <div class="control-group">
+        <div class="controls">
+          <input type="password" id="newpassword1" name="newpassword" class="input-xlarge"
+            placeholder="Enter New Password" required>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+          <input type="password" id="newpassword2" name="newpassword_verification" class="input-xlarge"
+            placeholder="Enter New Password Again" required>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+          <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+    </div>
+  </form>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h2>Arbitri</h2>
+
+    <table class="table table-hover">
+
+      <tr>
+        <th>#
+        <th>Name
+        <th>Email
+        <th>Club
+        <th>Categorie
+        <th>
+      {%- for judge in judges %}
+      <tr class={{ "success"}}>
+        <td><a>{{ judge.id }}</a>
+        <td >{{ judge.name }}
+        <td >{{	judge.email }}
+        <td >{{	judge.club }}
+        <td >{{ judge.category }}
+        <td >
+          <p>
+            <a href="{{ url_for('tabmaster.game_modify_judge', game_id = game_id, judge_id = judge.id) }}" class="btn btn-primary btn-small">Alege</a> 
+          </p>
+        <td>
+      {%- endfor %}
+    </table>
+     
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% block body %}
+	<h2>Create Round #{{round_number}}</h2>
+	<form action="" method=post class="form-horizontal">
+   
+ 	<div class="control-group">
+        <div class="controls">
+            <label><h3>Altgoritm imperechere:</h3></label>
+           
+            <select class="col-sm-2" name="pairing_altgotihm" >
+                <option value="High_High"> High - High </option>
+                <option value="High_Low"> High - Low </option>
+                <option value="High_Low_and_Brackets"> High - Low  and Brackets</option>
+            </select>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <label><h3>Tip runda:</h3></label>
+           
+            <select class="col-sm-2" name="round_type" >
+                <option value="open"> open </option>
+                <option value="closed"> closed </option>
+            </select>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+    		<label><h3>Email:</h3></label> 
+    			<div >
+      				<p class="form-control-static">{{email}}</p>
+    			</div>
+  		</div>
+  	</div>
+  	<div class="control-group">
+        <div class="controls">
+    		<label><h3>Password:</h3></label>
+   			<div >
+      			<input type="password" name = "password" required>
+    		</div>
+  		</div>
+  	</div>
+   <div class="control-group">
+        <div class="controls">
+          <button type="submit" class="btn btn-success">Send</button>
+          <a href="{{ url_for('tabmaster.round') }}">Back to list</a>
+        </div>
+    </div>
+</form>
+{% endblock %}

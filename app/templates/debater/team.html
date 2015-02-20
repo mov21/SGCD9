@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h2>Debatari</h2>
+
+    <table class="table table-hover">
+
+      <tr>
+        <th>#
+        <th>Name
+        <th>Email
+        <th>Team
+        <th>Club
+        <th>
+        <th>
+      {%- for debater in debaters %}
+      <tr class={{ "success"}}>
+        <td><a>{{ debater.id }}</a>
+        <td >{{ debater.name }}
+        <td >{{	debater.email }}
+        <td >{{	debater.team }}
+        <td >{{	debater.club }}
+        <td >
+            
+      {%- endfor %}
+      </table
+
+{% endblock %}

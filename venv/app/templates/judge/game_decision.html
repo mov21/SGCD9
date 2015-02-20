@@ -1,0 +1,178 @@
+{% extends "layout.html" %}
+{% block body %}
+  <form action="" method=post class="form-horizontal">
+    <h2>Atentie la decizie!!!</h2>
+    <div class="control-group">
+        <div class="controls">
+         <label><h3>Echipa castigatoare:</h3></label>
+        <label>
+            <select id="subject" name="winner" >
+                <option value="goverment">Guvern - {{game.goverment.name}}</option>
+                <option value="opposition">Opozitia - {{game.opposition.name}}</option>
+            </select>
+        </label>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+    
+        <label>Motivare decizie:</label>
+        <textarea name="decision_motivation" id="message" class="input-xlarge span5" rows="10"></textarea>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+            <label><h3>Punctaj guvern - {{game.goverment.name}}:</h3></label>
+           
+            <select class="col-sm-2" name="goverment1_id" >
+                {% if game.goverment.debater1 %}
+                <option value="{{ game.goverment.debater1.id }}">{{ game.goverment.debater1.name }}</option>
+                {% endif %}
+                {% if game.goverment.debater2 %}
+                <option value="{{ game.goverment.debater2.id }}">{{ game.goverment.debater2.name }}</option>
+                {% endif %}
+                {% if game.goverment.debater2 %}
+                <option value="{{ game.goverment.debater3.id }}">{{ game.goverment.debater3.name }}</option>
+                {% endif %}
+            </select>
+            &nbsp&nbsp
+
+            <input type="text" placeholder="Guvern 1" name="goverment1_points" required>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <select class="col-sm-2" name="goverment2_id" >
+                {% if game.goverment.debater1 %}
+                <option value="{{ game.goverment.debater1.id }}">{{ game.goverment.debater1.name }}</option>
+                {% endif %}
+                {% if game.goverment.debater2 %}
+                <option value="{{ game.goverment.debater2.id }}">{{ game.goverment.debater2.name }}</option>
+                {% endif %}
+                {% if game.goverment.debater2 %}
+                <option value="{{ game.goverment.debater3.id }}">{{ game.goverment.debater3.name }}</option>
+                {% endif %}
+            </select>
+            &nbsp&nbsp
+
+            <input type="text" placeholder="Guvern 2" name="goverment2_points" required>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <select class="col-sm-2" name="goverment3_id" >
+                {% if game.goverment.debater1 %}
+                <option value="{{ game.goverment.debater1.id }}">{{ game.goverment.debater1.name }}</option>
+                {% endif %}
+                {% if game.goverment.debater2 %}
+                <option value="{{ game.goverment.debater2.id }}">{{ game.goverment.debater2.name }}</option>
+                {% endif %}
+                {% if game.goverment.debater2 %}
+                <option value="{{ game.goverment.debater3.id }}">{{ game.goverment.debater3.name }}</option>
+                {% endif %}
+            </select>
+            &nbsp&nbsp
+
+            <input type="text" placeholder="Guvern 3" name="goverment3_points" required>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <select class="col-sm-2" name="goverment4_id" >
+                {% if game.goverment.debater1 %}
+                <option value="{{ game.goverment.debater1.id }}">{{ game.goverment.debater1.name }}</option>
+                {% endif %}
+                {% if game.goverment.debater2 %}
+                <option value="{{ game.goverment.debater2.id }}">{{ game.goverment.debater2.name }}</option>
+                {% endif %}
+                {% if game.goverment.debater2 %}
+                <option value="{{ game.goverment.debater3.id }}">{{ game.goverment.debater3.name }}</option>
+                {% endif %}
+            </select>
+            &nbsp&nbsp
+
+            <input type="text" placeholder="Guvern 4" name="goverment4_points" required>
+        </div>
+    </div>
+   <div class="control-group">
+        <div class="controls">
+            <label><h3>Punctaj opozitie - {{game.opposition.name}}:</h3></label>
+            <select class="col-sm-2" name="opposition1_id" >
+                {% if game.opposition.debater1 %}
+                <option value="{{ game.opposition.debater1.id }}">{{ game.opposition.debater1.name }}</option>
+                {% endif %}
+                {% if game.opposition.debater2 %}
+                <option value="{{ game.opposition.debater2.id }}">{{ game.opposition.debater2.name }}</option>
+                {% endif %}
+                {% if game.opposition.debater2 %}
+                <option value="{{ game.opposition.debater3.id }}">{{ game.opposition.debater3.name }}</option>
+                {% endif %}    
+            </select>
+            &nbsp&nbsp
+            
+            <input type="text" placeholder="Opozitie 1" name="opposition1_points" required>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <select class="col-sm-2" name="opposition2_id" >
+                {% if game.opposition.debater1 %}
+                <option value="{{ game.opposition.debater1.id }}">{{ game.opposition.debater1.name }}</option>
+                {% endif %}
+                {% if game.opposition.debater2 %}
+                <option value="{{ game.opposition.debater2.id }}">{{ game.opposition.debater2.name }}</option>
+                {% endif %}
+                {% if game.opposition.debater2 %}
+                <option value="{{ game.opposition.debater3.id }}">{{ game.opposition.debater3.name }}</option>
+                {% endif %}
+            </select>
+            &nbsp&nbsp
+
+            <input type="text" placeholder="Opozitie 2" name="opposition2_points" required>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <select class="col-sm-2" name="opposition3_id" >
+                {% if game.opposition.debater1 %}
+                <option value="{{ game.opposition.debater1.id }}">{{ game.opposition.debater1.name }}</option>
+                {% endif %}
+                {% if game.opposition.debater2 %}
+                <option value="{{ game.opposition.debater2.id }}">{{ game.opposition.debater2.name }}</option>
+                {% endif %}
+                {% if game.opposition.debater2 %}
+                <option value="{{ game.opposition.debater3.id }}">{{ game.opposition.debater3.name }}</option>
+                {% endif %}
+            </select>
+            &nbsp&nbsp
+
+            <input type="text" placeholder="Opozitie 3" name="opposition3_points" required>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <select class="col-sm-2" name="opposition4_id" >
+                {% if game.opposition.debater1 %}
+                <option value="{{ game.opposition.debater1.id }}">{{ game.opposition.debater1.name }}</option>
+                {% endif %}
+                {% if game.opposition.debater2 %}
+                <option value="{{ game.opposition.debater2.id }}">{{ game.opposition.debater2.name }}</option>
+                {% endif %}
+                {% if game.opposition.debater2 %}
+                <option value="{{ game.opposition.debater3.id }}">{{ game.opposition.debater3.name }}</option>
+                {% endif %}
+            </select>
+            &nbsp&nbsp
+
+            <input type="text" placeholder="Opozitie 4" name="opposition4_points" required>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+          <button type="submit" class="btn btn-success">Send</button>
+          <a href="{{ url_for('judge.judge_games') }}">Back to list</a>
+        </div>
+    </div>
+</form>
+{% endblock %}

@@ -24,11 +24,16 @@ from werkzeug import secure_filename
 from flask import send_from_directory
 
 
-ALLOWED_EXTENSIONS = set(['txt', 'pdf'])
+ALLOWED_EXTENSIONS = set(['txt', 'xml', 'cvs'])
 
 app = Flask(__name__)
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
-UPLOAD_FOLDER = os.path.join(APP_ROOT, 'uploads')
+print APP_ROOT
+(APP_ROOT, f) = os.path.split(APP_ROOT)
+print APP_ROOT
+UPLOAD_FOLDER = os.path.join(APP_ROOT, 'static/uploads')
+print UPLOAD_FOLDER
+#UPLOAD_FOLDER = '/static/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Flask-Login

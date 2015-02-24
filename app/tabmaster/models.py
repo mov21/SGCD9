@@ -12,7 +12,6 @@ class Team(db.Model):
     #oras si liceu 
     #
     team_res = db.relationship('Team_restriction', backref='team_res', lazy='dynamic') 
-    club_id = db.Column(db.Integer, db.ForeignKey('clubs.club_id'))
     debaters = db.relationship('Debater', backref='team', lazy='dynamic')
 
     def __init__(self, name):
@@ -27,16 +26,6 @@ class Team(db.Model):
                                   self.wins,
                                   self.defeats,
                                   self.points)
-
-class Club(db.Model):
-    __tablename__ = "clubs"
-    id = db.Column('club_id', db.Integer, primary_key=True)
-    teams = db.relationship('Team', backref='club', lazy='dynamic')
-    club_res = db.relationship('Club_restriction', backref='club_res', lazy='dynamic') 
-    name = db.Column(db.String(30),unique=True )
-    def __init__(self, name):
-        #print name
-        self.name = name
 
 
 class Game(db.Model):
@@ -96,42 +85,12 @@ class Game(db.Model):
     def decision(self,winner,loser,gov1,gov2,gov3,gov4,opp1,opp2,opp3,opp4,decision_motivation):
         self.winner = winner
         self.loser = loser
-        self.goverment1_points = gov1
-        self.goverment2_points = gov2
-        self.goverment3_points = gov3
-        self.goverment4_points = gov4
-        self.opposition1_points = opp1
-        self.opposition2_points = opp2
-        self.opposition3_points = opp3
-        self.opposition4_points = opp4
+
         self.decision_motivation = decision_motivation
-    
-    def goverment_points(self, gov1, gov2, gov3, gov4):
-        self.goverment1_points = gov1
-        self.goverment2_points = gov2
-        self.goverment3_points = gov3
-        self.goverment4_points = gov4
-    
-    def opposition_points(self, opp1, opp2, opp3, opp4):
-        self.opposition1_points = opp1
-        self.opposition2_points = opp2
-        self.opposition3_points = opp3
-        self.opposition4_points = opp4
+
 
     def has_not_decision(self):
         if self.winner is not None:
             return False
         else:
             return True
-    
-    def set_private(self,value):
-        self.private = value
-
-    def has_one_team(self):
-        print (self.goverment_id is None)
-        if self.goverment_id is None:
-            return True
-        print (self.opposition_id is None)
-        if self.opposition_id is None:
-            return True
-        return False

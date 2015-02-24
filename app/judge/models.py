@@ -5,16 +5,13 @@ class Judge(db.Model):
     id = db.Column('judge_id', db.Integer, primary_key=True)
     name = db.Column(db.String(30))
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    club_id = db.Column(db.Integer, db.ForeignKey('clubs.club_id'))
     debater_restrictions = db.relationship('Debater_restriction', backref='debater_restriction', lazy='dynamic')
-    team_restrictions = db.relationship('Team_restriction', backref='team_restriction', lazy='dynamic') 
-    club_restrictions = db.relationship('Club_restriction', backref='club_restriction', lazy='dynamic') 
+    team_restrictions = db.relationship('Team_restriction', backref='team_restriction', lazy='dynamic')  
     category = db.Column(db.Integer)
     restriction_points = db.Column(db.Integer)
     available = db.Column(db.Boolean)
-    def __init__(self, name, category):
+    def __init__(self, name):
         self.name = name
-        self.category = category
         self.available = True
         self.restriction_points = 0
 
@@ -40,15 +37,3 @@ class Team_restriction(db.Model):
         self.restriction_name = restriction_name
         self.judge_id = judge_id
         self.team_id = team_id
-        
-
-class Club_restriction(db.Model):
-    __tablename__ = "club_restrictions"
-    id = db.Column('club_restriction_id', db.Integer, primary_key=True)
-    judge_id = db.Column(db.Integer, db.ForeignKey('judges.judge_id'))
-    club_id = db.Column(db.Integer, db.ForeignKey('clubs.club_id'))
-    restriction_name = db.Column(db.String(30))
-    def __init__(self, restriction_name, judge_id, club_id = None):
-        self.restriction_name = restriction_name
-        self.judge_id = judge_id
-        self.club_id = club_id

@@ -10,9 +10,10 @@ from app import db
 from app.mod_auth.controllers import mail
 # Import module models (i.e. User)
 from app.debater.models import Debater
-from app.judge.models import Judge,Debater_restriction,Team_restriction,Club_restriction
+from app.judge.models import Judge,Debater_restriction,Team_restriction
 from app.mod_auth.models import User
-from app.tabmaster.models import Game, Team, Club
+from app.tabmaster.models import Game, Team
+from app.tabmaster.upload import upload_judges, upload_debaters, upload_rounds
 from functions import *
 
 # Import SQLAlchemy
@@ -23,8 +24,10 @@ import os
 from werkzeug import secure_filename
 from flask import send_from_directory
 
+# Import csv 
+import csv
 
-ALLOWED_EXTENSIONS = set(['txt', 'xml', 'cvs'])
+ALLOWED_EXTENSIONS = set(['txt', 'xml', 'csv'])
 
 app = Flask(__name__)
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -60,11 +63,26 @@ def allowed_file(filename):
 def upload_file():
     if request.method == 'POST':
         file = request.files['file']
-        print request.form.items(True)
+        file_type = request.form['result']
+        print file_type
         if file and allowed_file(file.filename):
             flash('File Successfully Uploaded')
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+
+            path_filename = os.path.join(UPLOAD_FOLDER, filename)
+
+            if file_type == 'debater':
+                print "da"
+                upload_debaters(path_filename)
+                #TODO
+            if file_type == 'arbitru':
+                upload_judges(path_filename)
+                #TODO
+            if file_type == 'runde':
+                upload_rounds(path_filename)
+                #TODO
     return render_template('tabmaster/upload_file.html')
 
 @tabmaster.before_request
@@ -76,6 +94,7 @@ def before_request():
     else:
         flash('You must log in to continue','error')
         return redirect(url_for('auth.login'))
+
 
 # TODO
 @tabmaster.route('/game_decisions', methods=['POST', 'GET'])
@@ -120,36 +139,27 @@ def create_debater():
                 if not request.form['team']:
                     flash('Team is required', 'error')
                 else:
-                    if not request.form['club']:
-                        flash('Club is required', 'error')
-                    else:
 
-                        name = request.form['name']
-                        email = request.form['email']
-                        team = request.form['team']
-                        club = request.form['club']
+                    name = request.form['name']
+                    email = request.form['email']
+                    team = request.form['team']
                         
-                        debater = Debater(name)
+                    debater = Debater(name)
                         
-                        if User.query.filter_by(email = email).count() == 0:
-                            create_user(email,"debater")
-                        user = User.query.filter_by(email = email).one()
-                        debater.user_id = user.id
+                    if User.query.filter_by(email = email).count() == 0:
+                        create_user(email,"debater")
+                    user = User.query.filter_by(email = email).one()
+                    debater.user_id = user.id
                         
-                        if Team.query.filter_by(name = team).count() == 0:
-                            create_team(team)
-                        team = Team.query.filter_by(name = team).one()   
-                        debater.team_id = team.id
+                    if Team.query.filter_by(name = team).count() == 0:
+                        create_team(team)
+                    team = Team.query.filter_by(name = team).one()   
+                    debater.team_id = team.id
                         
-                        if Club.query.filter_by(name = club).count() == 0:
-                            create_club(club)
-                        club = Club.query.filter_by(name = club).one()
-                        team.club_id = club.id
-                        
-                        db.session.add(debater)
-                        db.session.commit()
-                        flash(debater.name + ' was successfully created')
-                        return redirect(url_for('tabmaster.debaters'))
+                    db.session.add(debater)
+                    db.session.commit()
+                    flash(debater.name + ' was successfully created')
+                    return redirect(url_for('tabmaster.debaters'))
     
     #
     #   GET
@@ -168,8 +178,7 @@ def update_debater(id):
     debater = Debater.query.get(id)
     user = User.query.get(debater.user_id)
     team = Team.query.get(debater.team_id)
-    club = Club.query.get(team.club_id)
-    
+
     if request.method == 'GET':
         
         #
@@ -181,7 +190,6 @@ def update_debater(id):
         _debater['name'] = debater.name
         _debater['email'] = user.email
         _debater['team'] = team.name
-        _debater['club'] = club.name
         return render_template('tabmaster/update_debater.html',debater = _debater)
 
     #
@@ -191,7 +199,6 @@ def update_debater(id):
     name = request.form['name']
     email = request.form['email']
     team_name = request.form['team']
-    club_name = request.form['club']
     
     debater.name = name
     if(user.email != email):
@@ -201,15 +208,9 @@ def update_debater(id):
             flash('A different user has this email', 'error')
             return render_template('update_debater.html',debater = _debater)
     if(team.name != team_name):
-        club_id = team.club_id
         create_team(team_name)
         team = Team.query.filter_by(name = team_name).one()
-        debater.team_id = team.id
-        team.club_id = club_id
-    if(club.name != club_name):
-        create_club(club_name)
-        club = Club.query.filter_by(name = club_name).one()
-        team.club_id = club.id    
+        debater.team_id = team.id  
     db.session.commit()
     flash(debater.name+' was successfully updated')
     return redirect(url_for('tabmaster.debaters'))
@@ -244,9 +245,8 @@ def judges():
     for judge in judges:
         _judge = {}
         user = User.query.get(judge.user_id)
-        club = Club.query.get(judge.club_id)
         
-        _judge = judge_info(judge, user.email, club.name)
+        _judge = judge_info(judge, user.email)
         _judges.append(_judge)
 
     return render_template('tabmaster/judges.html',judges=_judges)
@@ -278,45 +278,30 @@ def create_judge():
             if not request.form['email']:
                 flash('Email is required', 'error')
             else:
-                if not request.form['club']:
-                    flash('Club is required', 'error')
-                else:
-                    category = request.form['category']
-                    name = request.form['name']
-                    email = request.form['email']
-                    club = request.form['club']
-                    
-                    judge = Judge(name,category)
+                category = request.form['category']
+                name = request.form['name']
+                email = request.form['email']
+                
+                judge = Judge(name,category)
                     
 
-                    if User.query.filter_by(email = email).count() == 0:
-                        create_user(email,"judge")
-                    user = User.query.filter_by(email = email).one()
-                    judge.user_id = user.id
-                           
-                    if Club.query.filter_by(name = club).count() == 0:
-                        create_club(club)
-                    club = Club.query.filter_by(name = club).one()
-                    judge.club_id = club.id
+                if User.query.filter_by(email = email).count() == 0:
+                    create_user(email,"judge")
+                user = User.query.filter_by(email = email).one()
+                judge.user_id = user.id
+
                     
 
-                    db.session.add(judge)
-                    db.session.commit()
-                    if request.form['clubs_restriction']:
-                        clubs_restriction = request.form['clubs_restriction']
-                        print "club res"
-                        update_clubs_restriction(clubs_restriction,judge.id)
-                    if request.form['teams_restriction']:
-                        print "team res"
-                        teams_restriction = request.form['teams_restriction']
-                        update_teams_restriction(teams_restriction,judge.id)
-                    if request.form['debaters_restriction']:
-                        print "debater res"
-                        debaters_restriction = request.form['debaters_restriction']
-                        update_debaters_restriction(debaters_restriction,judge.id)
-                    #print "Restrinction create"
-                    #print len(clubs_restriction)
-                    #print (clubs_restriction == "")
+                db.session.add(judge)
+                db.session.commit()
+                if request.form['teams_restriction']:
+                    print "team res"
+                    teams_restriction = request.form['teams_restriction']
+                    update_teams_restriction(teams_restriction,judge.id)
+                if request.form['debaters_restriction']:
+                    print "debater res"
+                    debaters_restriction = request.form['debaters_restriction']
+                    update_debaters_restriction(debaters_restriction,judge.id)
 
                     
                     flash(judge.name + ' was successfully created')
@@ -332,18 +317,13 @@ def create_judge():
 def update_judge(id):
     judge = Judge.query.get(id)
     user = User.query.get(judge.user_id)
-    club = Club.query.get(judge.club_id)
     if request.method == 'GET':
         
         #
         #   GET
         #
-        _judge = judge_info(judge, user.email, club.name)
+        _judge = judge_info(judge, user.email)
         delete_restrictions(judge.id)
-        print "inainte de afisare"
-        print _judge['clubs_restriction'] 
-        print _judge['teams_restriction'] 
-        print _judge['debaters_restriction'] 
         return render_template('tabmaster/update_judge.html', judge = _judge)
 
     #
@@ -352,7 +332,6 @@ def update_judge(id):
 
     name = request.form['name']
     email = request.form['email']
-    club_name = request.form['club']
     category = request.form['category']              
 
     judge.name = name
@@ -363,18 +342,9 @@ def update_judge(id):
         except:
             flash('A different user has this email', 'error')
             return render_template('update_debater.html',debater = _debater)
-    if(club.name != club_name):
-        create_club(club_name)
-        club = Club.query.filter_by(name = club_name).one()
-        judge.club_id = club.id
     
     judge.category = category
 
-
-    if request.form['clubs_restriction']:
-        clubs_restriction = request.form['clubs_restriction']
-        print "club res"
-        update_clubs_restriction(clubs_restriction,judge.id)
     if request.form['teams_restriction']:
         print "team res"
         teams_restriction = request.form['teams_restriction']
@@ -563,8 +533,7 @@ def game_select_modify_judge(id):
         if Game.query.filter_by(judge_id = judge.id, round_number = game.round_number).count() == 0:
             if verify_restriction(game,judge):
                 user = User.query.get(judge.user_id)
-                club = Club.query.get(judge.club_id)
-                _judges.append(judge_info(judge,user.email,club.name))
+                _judges.append(judge_info(judge,user.email))
     return render_template("tabmaster/game_select_modify_judge.html",judges = _judges,game_id = id)
 
 @tabmaster.route('/game_modify_judge/<game_id>/<judge_id>', methods=['GET'])

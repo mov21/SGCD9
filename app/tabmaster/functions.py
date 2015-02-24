@@ -10,9 +10,9 @@ from app import db
 from app.mod_auth.controllers import mail
 # Import module models (i.e. User)
 from app.debater.models import Debater
-from app.judge.models import Judge,Debater_restriction,Team_restriction,Club_restriction
+from app.judge.models import Judge,Debater_restriction,Team_restriction
 from app.mod_auth.models import User
-from app.tabmaster.models import Game, Team, Club
+from app.tabmaster.models import Game, Team
 from functions import *
 
 # Import SQLAlchemy
@@ -66,6 +66,7 @@ def game_info(games):
         _game = {}
         _game['id'] = game.id
         print game.goverment_id
+        print "bunica"
         print game.opposition_id
         goverment = team_info(game.goverment_id)
         _game['goverment'] = goverment
@@ -233,20 +234,6 @@ def pairing_altgotihms(pairing_altgotihm):
 #
 
 
-def update_clubs_restriction(clubs_restriction,judge_id):
-    clubs_name = clubs_restriction.split(",")
-    for club_name in clubs_name:
-        clubs = Club.query.filter_by(name = club_name)
-        if clubs.count() > 0:
-            club = clubs.one()
-            restrinction = Club_restriction(club_name,judge_id,club.id)
-        else:    
-            restrinction = Club_restriction(club_name,judge_id)
-        print restrinction.restriction_name
-        print restrinction.judge_id
-        db.session.add(restrinction)
-    db.session.commit()
-
 def update_teams_restriction(teams_restriction,judge_id):
     teams_name = teams_restriction.split(",")
     for team_name in teams_name:
@@ -335,16 +322,7 @@ def goverment_points(games):
 
 
 def create_user(email,role):
-    parola = id_generator()
-    print "parola " +parola
-    msg = Message(
-            'Saint George City of Debate - your password',
-        sender='mywusic@gmail.com',
-        recipients= 
-            [email])
-    msg.body = "This is your password "+parola+" try it!"
-    mail.send(msg)
-    user = User(email,parola,role)
+    user = User(email,"123abc",role)
     db.session.add(user)
     db.session.commit()
 
@@ -353,12 +331,19 @@ def create_team(name):
     db.session.add(team)
     db.session.commit()
 
-def create_club(name):
-    print "create club "+name
-    club = Club(name)
-    #print club.name
-    db.session.add(club)
+def create_judge(email):
+    parola = id_generator()
+    msg = Message(
+        'Saint George City of Debate - your password',
+        sender='mywusic@gmail.com',
+        recipients=[email])
+    msg.body = "This is your Password "+parola+" try it!"
+    mail.send(msg)
+    user = User(email, parola, "judge")
+    db.session.add(user)
     db.session.commit()
+
+
 
 #
 #
@@ -374,13 +359,11 @@ def debater_info(debaters):
         
         user = User.query.get(debater.user_id)
         team = Team.query.get(debater.team_id)
-        club = Club.query.get(team.club_id)
 
         _debater['id'] = debater.id
         _debater['name'] = debater.name
         _debater['email'] = user.email
         _debater['team'] = team.name
-        _debater['club'] = club.name
         _debaters.append(_debater)
     return _debaters
 
@@ -402,10 +385,6 @@ def restrictions_to_string(restrictions):
         restrictions_string = ",".join(restrictions_name) 
     return restrictions_string
 
-def get_club_restictions(judge_id):
-    restrictions = Club_restriction.query.filter_by(judge_id = judge_id)
-    return restrictions_to_string(restrictions)
-
 def get_team_restrictions(judge_id):
     restrictions = Team_restriction.query.filter_by(judge_id = judge_id)
     return restrictions_to_string(restrictions)
@@ -413,15 +392,13 @@ def get_debater_restrictions(judge_id):
     restrictions = Debater_restriction.query.filter_by(judge_id = judge_id)
     return restrictions_to_string(restrictions)
 
-def judge_info(judge, email, club_name):
+def judge_info(judge, email):
     _judge = {}
     _judge['id'] = judge.id
     _judge['name'] = judge.name
     _judge['email'] = email
-    _judge['club'] = club_name
     _judge['category'] = judge.category
     _judge['available'] = judge.available
-    _judge['clubs_restriction'] = get_club_restictions(judge.id)
     _judge['teams_restriction'] = get_team_restrictions(judge.id)
     _judge['debaters_restriction'] = get_debater_restrictions(judge.id)
     return _judge
@@ -431,9 +408,7 @@ def detele_restrictions(restrictions):
         db.session.delete(restriction)
     db.session.commit()
 
-def delete_club_restictions(judge_id):
-    restrictions = Club_restriction.query.filter_by(judge_id = judge_id)
-    return detele_restrictions(restrictions)
+
 def delete__team_restrictions(judge_id):
     restrictions = Team_restriction.query.filter_by(judge_id = judge_id)
     return detele_restrictions(restrictions)
@@ -442,29 +417,11 @@ def delete__debater_restrictions(judge_id):
     return detele_restrictions(restrictions)
 
 def delete_restrictions(judge_id):
-    delete_club_restictions(judge_id)
     delete__team_restrictions(judge_id)
     delete__debater_restrictions(judge_id)
 
 
-def clubs_restriction_points(judge_id):
-    restrictions = Club_restriction.query.filter_by(judge_id = judge_id)
-    number_teams = 0
-    judge = Judge.query.get(judge_id)
-    judge_club = Club.query.get(judge.club_id)
-    club_is_in_restriction = False
-    #print restriction
-    #print "Cluburi restriction "+str(judge_id) 
-    for restriction in restrictions:
-        print restriction.restriction_name
-        if restriction.name == judge_club.name:
-            club_is_in_restriction = True
-        if restriction.club_id == judge_club.id:
-            club_is_in_restriction = True
-        number_teams += Team.query.filter_by(club_id = restriction.club_id).count()
-    if not club_is_in_restriction:
-        number_teams += Team.query.filter_by(club_id = judge_club.id).count()
-    return number_teams*3
+
 def teams_restriction_points(judge_id):
     #print Team_restriction.query.filter_by(judge_id = judge_id).count()
     #print "team "+str(Team_restriction.query.filter_by(judge_id = judge_id).count()*3)
@@ -478,7 +435,6 @@ def update_restriction_points():
     judges = Judge.query.all()
     for judge in judges:
         restriction_points = 0
-        restriction_points += clubs_restriction_points(judge.id)
         print "restrictii "+str(judge.id)+" "+str(restriction_points)
         restriction_points += teams_restriction_points(judge.id)
         print "restrictii "+str(judge.id)+" "+str(restriction_points)
@@ -488,33 +444,6 @@ def update_restriction_points():
         judge.restriction_points = restriction_points
     db.session.commit()
 
-def verify_restriction_clubs(game, judge):
-    
-    goverment_team = Team.query.get(game.goverment_id)
-    goverment_club = Club.query.get(goverment_team.club_id)
-
-    opposition_team = Team.query.get(game.opposition_id)
-    opposition_club = Club.query.get(opposition_team.club_id)
-    
-    judge_club_id = judge.club_id
-    print goverment_club.name
-    print goverment_club.id
-    print opposition_club.name
-    print opposition_club.id
-    if judge_club_id:
-        print "judge club id " + str(judge_club_id)
-        if judge_club_id == goverment_club.id:
-            return False
-        if judge_club_id == opposition_club.id:
-            return False
-    restrictions = Club_restriction.query.filter_by(judge_id = judge.id)
-    for restriction in restrictions:
-        print "res " + str(restriction.club_id)
-        if restriction.club_id == goverment_club.id:
-            return False
-        if restriction.club_id == opposition_club.id:
-            return False
-    return True
 
 def verify_restriction_teams(game, judge):
     restrictions = Team_restriction.query.filter_by(judge_id = judge.id)
@@ -542,10 +471,6 @@ def verify_restriction_debaters(game, judge):
     return True
 
 def verify_restriction(game, judge):
-    print "verify club"
-    print verify_restriction_clubs(game, judge)
-    if not verify_restriction_clubs(game, judge):
-        return False
     print "verify team"
         
     print verify_restriction_teams(game, judge)

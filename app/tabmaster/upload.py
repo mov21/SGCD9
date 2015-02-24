@@ -48,29 +48,44 @@ def upload_judges(filename):
 		db.session.add(judge)
 		db.session.commit()
 
-
+runde =0
 def upload_rounds(filename):
-    with open(filename, 'rb') as f:
-    	reader = csv.reader(f)
-  			
-  	for row in reader:
-  		round_number = update_round_number()
-   		game = Game(round_number,row[0])
-   		government = Team.query.filter_by(name = row[1]).one()
-   		opposition = Team.query.filter_by(name = row[2]).one()
-   		judge = Judge.query.filter_by(name = row[3]).one()
+  f = open(filename, 'rb')
+  for row in f:
+    print row
+    [room, team1, team2, judge] = row.split(",")
 
-   		game.government_id = government.id
-   		game.opposition_id = opposition.id
-   		game.judge = judge
+    print room
+    print team1
+    print team2
+    print judge
+    
+    round_number = runde
+    game = Game(round_number,room)
+    print game.room
+    government = Team.query.filter_by(name = team1).one()
+    opposition = Team.query.filter_by(name = team2).one()
+    #_judge = Judge.query.filter_by(name = judge).first()
+    judges = Judge.query.all()
+    _judges = []
+    for judge in judges:
+      user = User.query.get(judge.user_id)
+      print user.email
 
-   		list_government = Debater.query.filter_by(team_id = government.id)
-   		for debater in list_government:
-   			print debater.name
 
+    game.government_id = government.id
+    game.opposition_id = opposition.id
+    game.judge_id = _judge.id
 
-		db.session.add(game)
-		db.session.commit()
+    db.session.add(game)
+    db.session.commit()
+
+    g = Game.query.filter_by(room = room).first()
+    p = Game.query.filter_by(room = room)
+    print p
+    print g.room
+    print g.round_number
+
 
 
 

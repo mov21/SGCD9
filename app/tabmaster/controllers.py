@@ -399,13 +399,15 @@ def round():
     if request.method == 'POST':
         return render_template("round.html")
     #games = Game.query.all()
-    round_number = get_round_number()
+    #round_number = get_round_number()
+    round_number = 1
     #games = Game.query.order_by(desc(Game.round_number))
     
     #print "round number " + str(round_number) 
-    games = Game.query.filter_by(round_number = round_number)
-    _games = game_info(games)
-    return render_template("tabmaster/round.html", games = _games, round_number = round_number)
+    games = Game.query.all()
+
+   # _games = game_info(games)
+    return render_template("tabmaster/round.html", games = games, round_number = round_number)
 
 @tabmaster.route('/echipe', methods=['GET','POST'])
 def teams():
